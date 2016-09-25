@@ -98,7 +98,7 @@ ScriptDetector.startTimer(
 
 ## Manual detection
 
-## Calling the detector manually
+### Calling the detector manually
 ```javascript
 ScriptDetector.doVerification(
   function (detected) {
@@ -108,4 +108,4 @@ ScriptDetector.doVerification(
     console.log('Nothing detected');
   }
 );
-````
+```
