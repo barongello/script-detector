@@ -44,6 +44,11 @@ ScriptDetector.setChromeExtensionsIds([
 
 ## Detecting scripts from specific domains
 
+### Clearing domains
+```javascript
+ScriptDetector.clearDomains();
+```
+
 ### Setting domains
 ```javascript
 ScriptDetector.setDomains([
@@ -54,6 +59,11 @@ ScriptDetector.setDomains([
 
 ## Detecting scripts with specific filenames
 
+### Clearing filenames
+```javascript
+ScriptDetector.clearFilenames();
+```
+
 ### Setting filenames
 ```javascript
 ScriptDetector.setFilenames([
@@ -63,6 +73,11 @@ ScriptDetector.setFilenames([
 ```
 
 ## Detecting scripts that matches regular expressions
+
+### Clearing regular expressions
+```javascript
+ScriptDetector.clearRegularExpressions();
+```
 
 ### Setting regular expressions
 ```javascript
@@ -100,7 +115,7 @@ ScriptDetector.startTimer(
 
 ### Calling the detector manually
 ```javascript
-ScriptDetector.doVerification(
+ScriptDetector.detect(
   function (detected) {
     console.log('Scripts Detected:', detected);
   },

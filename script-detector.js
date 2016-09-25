@@ -1,8 +1,8 @@
 /*
- * Script Detector v1.0
+ * Script Detector v1.1
  * https://github.com/barongello/script-detector
  *
- * Copyright 2016 - Now Wagner Barongello
+ * Copyright 2016 Wagner Barongello
  * Released under MIT license
  */
 
@@ -91,13 +91,23 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (typeof chromeExtensionsIds !== 'undefined' && chromeExtensionsIds !== null && chromeExtensionsIds.constructor === Array) {
-      this.shouldBlock.chromeExtensionsIds = [];
+    if (typeof chromeExtensionsIds === 'undefined' || chromeExtensionsIds === null || chromeExtensionsIds.constructor !== Array)
+      return this;
 
-      for (var i in chromeExtensionsIds)
-        if (typeof chromeExtensionsIds[i] !== 'undefined' && chromeExtensionsIds[i] !== null && chromeExtensionsIds[i].constructor === String)
-          this.shouldBlock.chromeExtensionsIds.push(chromeExtensionsIds[i]);
-    }
+    this.shouldBlock.chromeExtensionsIds = [];
+
+    for (var i in chromeExtensionsIds)
+      if (typeof chromeExtensionsIds[i] !== 'undefined' && chromeExtensionsIds[i] !== null && chromeExtensionsIds[i].constructor === String)
+        this.shouldBlock.chromeExtensionsIds.push(chromeExtensionsIds[i]);
+
+    return this;
+  },
+
+  clearDomains: function () {
+    if (this.initialized !== true)
+      return this;
+
+    this.shouldBlock.domains = [];
 
     return this;
   },
@@ -106,13 +116,23 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (typeof domains !== 'undefined' && domains !== null && domains.constructor === Array) {
-      this.shouldBlock.domains = [];
+    if (typeof domains === 'undefined' || domains === null || domains.constructor !== Array)
+      return this;
 
-      for (var i in domains)
-        if (typeof domains[i] !== 'undefined' && domains[i] !== null && domains[i].constructor === String)
-          this.shouldBlock.domains.push(domains[i]);
-    }
+    this.shouldBlock.domains = [];
+
+    for (var i in domains)
+      if (typeof domains[i] !== 'undefined' && domains[i] !== null && domains[i].constructor === String)
+        this.shouldBlock.domains.push(domains[i]);
+
+    return this;
+  },
+
+  clearFilenames: function () {
+    if (this.initialized !== true)
+      return this;
+
+    this.shouldBlock.filenames = [];
 
     return this;
   },
@@ -121,13 +141,23 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (typeof filenames !== 'undefined' && filenames !== null && filenames.constructor === Array) {
-      this.shouldBlock.filenames = [];
+    if (typeof filenames === 'undefined' || filenames === null || filenames.constructor !== Array)
+      return this;
 
-      for (var i in filenames)
-        if (typeof filenames[i] !== 'undefined' && filenames[i] !== null && filenames[i].constructor === String)
-          this.shouldBlock.filenames.push(filenames[i]);
-    }
+    this.shouldBlock.filenames = [];
+
+    for (var i in filenames)
+      if (typeof filenames[i] !== 'undefined' && filenames[i] !== null && filenames[i].constructor === String)
+        this.shouldBlock.filenames.push(filenames[i]);
+
+    return this;
+  },
+
+  clearRegularExpressions: function () {
+    if (this.initialized !== true)
+      return this;
+
+    this.shouldBlock.regularExpressions = [];
 
     return this;
   },
@@ -136,13 +166,14 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (typeof regularExpressions !== 'undefined' && regularExpressions !== null && regularExpressions.constructor === Array) {
-      this.shouldBlock.regularExpressions = [];
+    if (typeof regularExpressions === 'undefined' || regularExpressions === null || regularExpressions.constructor !== Array)
+      return this;
 
-      for (var i in regularExpressions)
-        if (typeof regularExpressions[i] !== 'undefined' && regularExpressions[i] !== null && regularExpressions[i].constructor === RegExp)
-          this.shouldBlock.regularExpressions.push(regularExpressions[i]);
-    }
+    this.shouldBlock.regularExpressions = [];
+
+    for (var i in regularExpressions)
+      if (typeof regularExpressions[i] !== 'undefined' && regularExpressions[i] !== null && regularExpressions[i].constructor === RegExp)
+        this.shouldBlock.regularExpressions.push(regularExpressions[i]);
 
     return this;
   },
@@ -151,15 +182,16 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (typeof timer !== 'undefined' && timer !== null && timer.constructor === Number && Number.isInteger(timer) === true) {
-      this.timer = timer;
+    if (typeof timer === 'undefined' || timer === null || timer.constructor !== Number || Number.isInteger(timer) !== true)
+      return this;
 
-      if (this.interval !== null) {
-        this.stopTimer();
+    this.timer = timer;
 
-        if (this.timer >= 0)
-          this.startTimer();
-      }
+    if (this.interval !== null) {
+      this.stopTimer();
+
+      if (this.timer >= 0)
+        this.startTimer();
     }
 
     return this;
@@ -169,17 +201,21 @@ window.ScriptDetector = window.ScriptDetector || {
     if (this.initialized !== true)
       return this;
 
-    if (this.interval !== null) {
-      clearInterval(this.interval);
+    if (this.interval === null)
+      return this;
 
-      this.interval = null;
-    }
+    clearInterval(this.interval);
+
+    this.interval = null;
 
     return this;
   },
 
-  startTimer: function (callbackFound, callbackNotFound) {
+  startTimer: function (callbackFound, callbackNotFound, timer) {
     if (this.initialized !== true)
+      return this;
+
+    if (this.interval !== null)
       return this;
 
     if (typeof callbackFound === 'undefined' || (callbackFound !== null && callbackFound.constructor !== Function))
@@ -188,16 +224,19 @@ window.ScriptDetector = window.ScriptDetector || {
     if (typeof callbackNotFound === 'undefined' || (callbackNotFound !== null && callbackNotFound.constructor !== Function))
       callbackNotFound = null;
 
+    if (typeof timer !== 'undefined' && timer !== null && timer.constructor === Number && Number.isInteger(timer) === true)
+      this.setTimer(timer);
+
     if (this.timer >= 0) {
       var _this = this;
 
-      this.interval = setInterval(function () { _this.doVerification(callbackFound, callbackNotFound); }, this.timer);
+      this.interval = setInterval(function () { _this.detect(callbackFound, callbackNotFound); }, this.timer);
     }
 
     return this;
   },
 
-  doVerification: function (callbackFound, callbackNotFound) {
+  detect: function (callbackFound, callbackNotFound) {
     if (this.initialized !== true)
       return this;
 
